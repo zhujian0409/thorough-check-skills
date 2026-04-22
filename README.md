@@ -47,6 +47,7 @@ Unlike `stakeholder-writeup`, this one is meant to fire automatically — `disab
 Clone this repo and copy the skill directory into your Claude Code user-level skills folder:
 
 ```bash
+mkdir -p ~/.claude/skills
 git clone https://github.com/zhujian0409/thorough-check-skills.git
 cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 ```
@@ -54,6 +55,7 @@ cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 Or keep the repo and symlink (so `git pull` updates the skill in place):
 
 ```bash
+mkdir -p ~/.claude/skills
 git clone https://github.com/zhujian0409/thorough-check-skills.git
 ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.claude/skills/thorough-check
 ```

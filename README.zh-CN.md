@@ -47,6 +47,7 @@
 clone 本仓库，把 skill 目录拷到你的 Claude Code 用户级 skill 目录：
 
 ```bash
+mkdir -p ~/.claude/skills
 git clone https://github.com/zhujian0409/thorough-check-skills.git
 cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 ```
@@ -54,6 +55,7 @@ cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 或者保留本仓库，用软链接（这样 `git pull` 就能直接更新 skill）：
 
 ```bash
+mkdir -p ~/.claude/skills
 git clone https://github.com/zhujian0409/thorough-check-skills.git
 ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.claude/skills/thorough-check
 ```
