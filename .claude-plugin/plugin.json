@@ -1,11 +1,11 @@
 {
   "name": "thorough-check",
-  "description": "Claude Code skill — exhaustively verify a code/config change with command-output evidence. Covers change sites, boundary conditions, file integrity, and the full upstream/downstream call chain.",
-  "version": "1.0.0",
+  "description": "Codex- and Claude Code-compatible skill — exhaustively verify a code/config change with command-output evidence, default read-only reviewer agents, impact mapping, boundary checks, file integrity, call-chain tracing, and state-migration risk review.",
+  "version": "1.1.0",
   "author": { "name": "zhujian0409" },
   "homepage": "https://github.com/zhujian0409/thorough-check-skills",
   "repository": "https://github.com/zhujian0409/thorough-check-skills",
   "license": "MIT",
-  "keywords": ["claude-code", "claude-skills", "code-review", "verification", "evidence"],
+  "keywords": ["codex", "codex-skills", "claude-code", "claude-skills", "code-review", "verification", "evidence"],
   "skills": ["./thorough-check"]
 }
