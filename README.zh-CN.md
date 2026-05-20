@@ -2,7 +2,7 @@
 
 **语言：** [English](README.md) | 中文
 
-[@zhujian0409](https://github.com/zhujian0409) 写的一个 [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview) skill：对刚做完的代码/配置改动做彻底核验，默认启动只读 reviewer agent 做交叉复核，拿不出命令输出当证据就拒绝说"OK"。
+[@zhujian0409](https://github.com/zhujian0409) 写的一个兼容 Codex 和 [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview) 的 skill：对刚做完的代码/配置改动做彻底核验，默认启动只读 reviewer agent 做交叉复核，拿不出命令输出当证据就拒绝说"OK"。
 
 ## 干什么用
 
@@ -48,11 +48,29 @@ token 成本不是跳过 reviewer 的理由。如果运行时不能启动 subage
 - "Is the entire call chain consistent?"
 - "Verify this change won't break anything"
 
-和 `stakeholder-writeup` 不一样，这个是**故意让它能自动被触发**——skill frontmatter 里**不设** `disable-model-invocation`，Claude 能够自己识别你的担忧表达。
+和 `stakeholder-writeup` 不一样，这个是**故意让它能自动被触发**。Codex 可以读取 skill description 和 `agents/openai.yaml` 展示元数据；Claude Code 侧则因为 frontmatter 里**不设** `disable-model-invocation`，也能够自己识别你的担忧表达。
 
 ## 安装
 
-clone 本仓库，把 skill 目录拷到你的 Claude Code 用户级 skill 目录：
+clone 本仓库，把 skill 目录拷到你的用户级 skill 目录。
+
+Codex：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/zhujian0409/thorough-check-skills.git
+cp -r thorough-check-skills/thorough-check ~/.codex/skills/
+```
+
+或者保留本仓库，给 Codex 用软链接：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/zhujian0409/thorough-check-skills.git
+ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.codex/skills/thorough-check
+```
+
+Claude Code：
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -60,7 +78,7 @@ git clone https://github.com/zhujian0409/thorough-check-skills.git
 cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 ```
 
-或者保留本仓库，用软链接（这样 `git pull` 就能直接更新 skill）：
+或者保留本仓库，给 Claude Code 用软链接：
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -68,7 +86,7 @@ git clone https://github.com/zhujian0409/thorough-check-skills.git
 ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.claude/skills/thorough-check
 ```
 
-放到 `~/.claude/skills/` 下的 skill 会被 Claude Code 自动注册。下一次会话里，你说出触发短语就会直接被接住。
+Codex 使用 `~/.codex/skills/`；Claude Code 使用 `~/.claude/skills/`。安装或更新后开启新会话，运行时会读取最新的 skill 元数据。
 
 ## 设计理念
 
@@ -76,6 +94,8 @@ ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.claude/skills/thorough-ch
 2. **走完整条链路，不只看被改的那一行。** 大多数回归不是来自你改动的那一行本身，而是来自上游的数据源或下游被遗忘的调用方。skill 强制你把两头都走一遍。
 
 完整清单、默认多 agent 交叉复核规则、常见"链条没查全"的坑点、以及 skill 每次核验完对自己的自检，见 [SKILL.md](thorough-check/SKILL.md)。
+
+版本更新记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## License
 

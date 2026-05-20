@@ -2,7 +2,7 @@
 
 **Languages:** English | [中文](README.zh-CN.md)
 
-A [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview) skill by [@zhujian0409](https://github.com/zhujian0409) that exhaustively verifies a code/config change with command-output evidence, impact mapping, and default read-only reviewer agents — and refuses to conclude "OK" from vibes.
+A Codex- and [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview)-compatible skill by [@zhujian0409](https://github.com/zhujian0409) that exhaustively verifies a code/config change with command-output evidence, impact mapping, and default read-only reviewer agents — and refuses to conclude "OK" from vibes.
 
 ## What it does
 
@@ -48,11 +48,29 @@ This skill **auto-triggers** on phrases that express doubt about a just-made cha
 - "流程链条都对吗"
 - "能确定不会出问题吗"
 
-Unlike `stakeholder-writeup`, this one is meant to fire automatically — `disable-model-invocation` is intentionally absent so Claude can pick up the trigger phrases on its own.
+Unlike `stakeholder-writeup`, this one is meant to fire automatically. Codex can use the skill description and `agents/openai.yaml` metadata, while Claude Code can pick up the trigger phrases because `disable-model-invocation` is intentionally absent.
 
 ## Installation
 
-Clone this repo and copy the skill directory into your Claude Code user-level skills folder:
+Clone this repo and copy the skill directory into your user-level skills folder.
+
+For Codex:
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/zhujian0409/thorough-check-skills.git
+cp -r thorough-check-skills/thorough-check ~/.codex/skills/
+```
+
+Or keep the repo and symlink it for Codex:
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/zhujian0409/thorough-check-skills.git
+ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.codex/skills/thorough-check
+```
+
+For Claude Code:
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -60,7 +78,7 @@ git clone https://github.com/zhujian0409/thorough-check-skills.git
 cp -r thorough-check-skills/thorough-check ~/.claude/skills/
 ```
 
-Or keep the repo and symlink (so `git pull` updates the skill in place):
+Or keep the repo and symlink it for Claude Code:
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -68,7 +86,7 @@ git clone https://github.com/zhujian0409/thorough-check-skills.git
 ln -s "$(pwd)/thorough-check-skills/thorough-check" ~/.claude/skills/thorough-check
 ```
 
-Claude Code auto-registers anything placed under `~/.claude/skills/`. Your next session will pick up the trigger phrases automatically.
+Codex uses `~/.codex/skills/`; Claude Code uses `~/.claude/skills/`. Start a new session after installing or updating so the runtime picks up the latest skill metadata.
 
 ## Design notes
 
@@ -76,6 +94,8 @@ Claude Code auto-registers anything placed under `~/.claude/skills/`. Your next 
 2. **Walk the full chain, not just the changed line.** Most regressions come from the upstream data source or a downstream caller the change forgot about. The skill forces you to trace both directions.
 
 See [SKILL.md](thorough-check/SKILL.md) for the complete checklist, default multi-agent review rules, typical "chain not fully checked" pitfalls, and the self-check the skill runs on itself after every audit.
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 
