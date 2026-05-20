@@ -1,0 +1,25 @@
+{
+  "skill_name": "thorough-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚把一个配置参数从 old_mode 改成 new_mode，改动看起来只有一行。用 thorough-check 仔细检查各种边界、历史数据、上线中间态、回滚和上下游文件影响。",
+      "expected_output": "报告必须默认启动 impact reviewer 和 final reviewer 两个独立只读 agent，或说明真实阻塞原因；先给影响面地图和 blast radius，再覆盖旧数据、新数据、混合部署、回滚、调用方、配置来源、测试或无法验证项。"
+    },
+    {
+      "id": 2,
+      "prompt": "我改了一个状态枚举和一个 JSON 字段名，帮我确认不会影响其他接口、后台、导出、定时任务和旧数据。",
+      "expected_output": "报告必须合并默认双 agent 交叉复核结果，或说明真实阻塞原因；项目级搜索字段/枚举别名，列出读写方、旧新数据兼容、导入导出、后台页面、任务脚本、边界样例和文件完整性证据。"
+    },
+    {
+      "id": 3,
+      "prompt": "我改了权限判断，页面现在能打开了。再彻底检查 scope、角色、public、旧 session、菜单入口和直接 API 访问都没问题吗？",
+      "expected_output": "报告必须合并默认 impact/final reviewer agent 发现，或说明真实阻塞原因；区分正向/反向权限用例，检查角色映射、scope 来源、直接接口访问、菜单入口、旧登录态和剩余未验证风险。"
+    },
+    {
+      "id": 4,
+      "prompt": "我删除了一批旧文件和一个旧任务入口，帮我最后确认没有误删、没有旧脚本还引用、打包发布也不会漏。",
+      "expected_output": "报告必须包含默认 impact reviewer 的影响面扫描和 final reviewer 对主结论的反证复核，或说明真实阻塞原因；列出删除清单、引用搜索、动态引用/脚本/cron/deploy/package/docs 检查、文件完整性、归档或回滚路径。"
+    }
+  ]
+}
