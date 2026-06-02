@@ -25,6 +25,8 @@ For real verification runs, the skill defaults to read-only reviewer agents when
 
 Token cost is not a reason to skip those reviewers. If the runtime cannot spawn subagents, the final report must say so explicitly.
 
+Reports use stable labels for auditability: **Old value / New value**, **Upstream / Downstream**, **Excluded files**, and **Next run**. Dirty Git/SVN working copies must separate real commit/deploy scope from temporary, generated, QA, report, cache, and build files.
+
 Each check produces a row in the final table with **Check / Result / Evidence**. Rows without a concrete grep/diff/parse output get marked ⚠️ and a demand for the actual command, not a "seems fine."
 
 Output language auto-detects: English primary, Chinese when the conversation is primarily Chinese.

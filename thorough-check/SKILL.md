@@ -78,6 +78,13 @@ Run in order. **Every block must output concrete commands and their results as e
 | **C — File integrity** | Syntax is legal; tags / brackets are balanced |
 | **E — Call-chain context** | Upstream/downstream of the modified code is still consistent |
 
+Use stable labels in every report so the chain is easy to audit later:
+
+- **Old value / New value**: for parameter, text, enum, status, permission, feature-flag, route, or schema changes, explicitly name the previous value and the new value before judging behavior.
+- **Upstream / Downstream**: in Block E, explicitly label where changed data comes from and who consumes it. Do not rely on vague "callers checked" wording when a reader needs to trace the chain.
+- **Excluded files**: in dirty Git/SVN working copies, explicitly list generated, temporary, QA, report, cache, build, or local-only files to exclude from commit/deploy scope.
+- **Next run**: for scheduled jobs, automations, prompt/memory edits, and publish flows, explicitly describe what the next execution will read and do.
+
 ---
 
 ### Block 0 — Impact-map first ("how big is the blast radius?")
@@ -131,6 +138,7 @@ If this map is incomplete because the repo, database, server, or dependency is u
 2. For each change:
    - `grep -n '<new key string>' <file>` — confirm new content is present
    - `grep -n '<old key string>' <file>` — confirm old content is gone (should be 0 matches)
+   - Write a short **Old value / New value** row for every changed threshold, config, label, enum/status, route, or schema field, even when the values are obvious from the diff.
 3. If this was a "global replacement / N similar edits":
    - **Re-grep the entire file for every variant** of the original string to catch misses.
    - Typical miss patterns: `404 / 5xx` → forgot `404+5xx` / `404 + 5xx` / `404/5xx`.
@@ -219,6 +227,7 @@ systemd-analyze verify ~/.config/systemd/user/xxx.service 2>&1
 - For each variable used in the change, how is it initialized in the same scope?
 - If it comes from data.json / API / env var, does the source format match?
 - Example: changed the KPI showing `s5xx` → trace `const s5xx = ...` back to the source (`nginx.s5xx`); ask "what if the nginx object is missing? what if s5xx is a string rather than a number?"
+- Label this section **Upstream** in the final report and include file/function/source names, not just prose.
 
 **2. Data flow downstream (who uses this thing?)**
 
@@ -226,6 +235,7 @@ systemd-analyze verify ~/.config/systemd/user/xxx.service 2>&1
 - Changed a KPI formula → check derived vars like `nginxErrCount`.
 - Changed a function signature → every call site must be updated (or runtime TypeError).
 - Changed a data.json field → every front-end reader of that field must be checked.
+- Label this section **Downstream** in the final report and include each consumer/caller/read path checked.
 
 Also search by concept, not just exact symbol. Many breakages hide behind aliases:
 
@@ -405,6 +415,7 @@ If tests cannot run, show the command attempted and the blocker. Then list the h
 | Scheduled-task config change | `systemctl list-timers` + linger + prompt/memory consistency + full dry-run of the next trigger |
 | prompt / memory edit | What Codex will read next time, and whether it conflicts with old memory |
 | Frontend + publish | Full chain: source file → publish → remote → CDN cache → browser cache |
+| Dirty Git/SVN working copy | Separate commit/deploy scope from local noise; explicitly list included files and **exclude temp/generated/QA/report/cache/build files** |
 | Keys / permissions | `chmod` bits, owner, group, sudo capability, readability by other users |
 | Schema change | Old and new field data both consumable; front-end / export / SQL all compatible |
 | State-machine / lifecycle behavior change | Treat as state migration: historical records, in-flight records, callbacks/events, retries, complete/cancel/expire/retry/manual paths, cleanup jobs, reconciliation, rollback, and mixed deployments |

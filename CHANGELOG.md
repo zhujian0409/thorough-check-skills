@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.1 - 2026-06-02
+
+### Added
+
+- Stable report labels for `Old value / New value`, `Upstream / Downstream`, `Excluded files`, and `Next run`.
+- Dirty Git/SVN working-copy guidance to separate commit/deploy scope from temporary, generated, QA, report, cache, and build files.
+- Regression eval coverage for selective commit boundaries in dirty working copies.
+
+### Changed
+
+- Updated Codex display metadata so implicit prompts emphasize old/new values, upstream/downstream tracing, and excluded files.
+
 ## 1.1.0 - 2026-05-20
 
 ### Added

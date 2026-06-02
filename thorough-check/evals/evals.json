@@ -20,6 +20,11 @@
       "id": 4,
       "prompt": "我删除了一批旧文件和一个旧任务入口，帮我最后确认没有误删、没有旧脚本还引用、打包发布也不会漏。",
       "expected_output": "报告必须包含默认 impact reviewer 的影响面扫描和 final reviewer 对主结论的反证复核，或说明真实阻塞原因；列出删除清单、引用搜索、动态引用/脚本/cron/deploy/package/docs 检查、文件完整性、归档或回滚路径。"
+    },
+    {
+      "id": 5,
+      "prompt": "SVN 工作副本里同时有业务改动、tmp/report.html、qa/output.json 和 build 产物。帮我确认这次到底该提交哪些文件，哪些必须排除，并检查上下游链路。",
+      "expected_output": "报告必须明确 included files 与 Excluded files，排除临时、生成、QA、report、cache、build 文件；同时给出 Old value / New value、Upstream / Downstream、Block C 文件完整性和 Block E 调用链证据。"
     }
   ]
 }

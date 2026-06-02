@@ -1,7 +1,7 @@
 interface:
   display_name: "Thorough Check"
-  short_description: "默认用独立 agent 和证据复核影响面、链路、边界和迁移"
-  default_prompt: "用 $thorough-check 结合真实命令输出证据；默认启动 impact reviewer 和 final reviewer 两个独立只读 agent。先画影响面和 blast radius，再复核改动点、边界、跨文件上下游链路、历史数据、异步任务、缓存、回滚和状态迁移风险；没开 agent 必须说明真实原因。"
+  short_description: "用证据复核影响面、旧新值、上下游链路、边界和迁移"
+  default_prompt: "用 $thorough-check 结合真实命令输出证据；默认启动 impact reviewer 和 final reviewer 两个独立只读 agent。先画影响面和 blast radius，再用 Old value / New value、Upstream / Downstream 等稳定标签复核改动点、边界、跨文件链路、历史数据、异步任务、缓存、回滚、混部和状态迁移风险；脏 Git/SVN 要列明提交范围并 exclude temp/generated/QA/report/cache/build files；没开 agent 必须说明真实原因。"
 
 policy:
   allow_implicit_invocation: true

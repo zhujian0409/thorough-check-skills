@@ -25,6 +25,8 @@
 
 token 成本不是跳过 reviewer 的理由。如果运行时不能启动 subagent，最终报告必须明确说明原因。
 
+报告会使用稳定标签方便回看：**Old value / New value**、**Upstream / Downstream**、**Excluded files** 和 **Next run**。如果 Git/SVN 工作副本是脏的，必须把真正要提交/发布的文件和临时、生成、QA、报告、缓存、build 文件分开列清楚。
+
 每一条都会在最终的表格里给出**检查项 / 结果 / 证据**三列。没有具体 grep/diff/parse 输出的那一条会被打 ⚠️ 并要求你给出真实命令，不允许用"看起来还行"糊过去。
 
 输出语言自动识别：默认英文，当对话主要是中文时切中文。
