@@ -25,6 +25,11 @@
       "id": 5,
       "prompt": "SVN 工作副本里同时有业务改动、tmp/report.html、qa/output.json 和 build 产物。帮我确认这次到底该提交哪些文件，哪些必须排除，并检查上下游链路。",
       "expected_output": "报告必须明确 included files 与 Excluded files，排除临时、生成、QA、report、cache、build 文件；同时给出 Old value / New value、Upstream / Downstream、Block C 文件完整性和 Block E 调用链证据。"
+    },
+    {
+      "id": 6,
+      "prompt": "AI 根据 Swagger 给广告接口新增了 7 个字段，页面看起来正常，因为取不到广告时会显示默认广告。上线前帮我仔细复核。",
+      "expected_output": "不能只用 Swagger、mock、编译成功或页面有内容作为通过证据。必须逐字段对照文档契约、后端 DTO/序列化实现、真实响应和客户端解析；覆盖正常、合法空数据、缺字段、null、错类型和超时；至少一次禁用或监控默认广告 fallback，证明主响应解析成功，并区分无广告、契约/解析失败和上游不可用。任何脑补字段或 fallback 掩盖失败都必须阻断上线。"
     }
   ]
 }
