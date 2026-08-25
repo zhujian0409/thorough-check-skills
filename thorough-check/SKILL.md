@@ -312,6 +312,21 @@ Do not only run the easiest syntax check. Pick verification proportional to risk
 - Frontend workflow change: browser smoke test for desktop/mobile or at least DOM/render check if browser is unavailable.
 - Production/config/deploy change: local config, deployed config, secrets/env names, restart/reload path, rollback path.
 
+#### API contract truth gate
+
+For any API response, payload, generated client, or field-shape change, documentation alone is not proof. Swagger/OpenAPI, interface notes, examples, mocks, and AI-generated code are hypotheses until they are reconciled with an authoritative implementation or an observed response.
+
+Before marking the API path safe:
+
+1. Build a field-by-field table for `documented contract -> backend DTO/serializer/controller -> observed response -> client parser/consumer`. Mark any unavailable layer as unverified; do not invent, infer, or silently add fields to close a gap.
+2. Every newly consumed response field must be supported by at least one authoritative backend implementation source and, when a runnable environment is available, a captured response from the exact endpoint/version. A successful compile or a Swagger match alone does not pass this gate.
+3. Exercise a representative success payload, a legitimate empty/no-data payload, missing fields, explicit `null`, wrong types, and an error/timeout payload. Confirm the client distinguishes these states instead of collapsing them into one default result.
+4. Disable or instrument fallback/default/sample data for at least one verification run. Prove whether the primary response parsed successfully before fallback activates. A page that looks normal only because default content appeared is a failed or unresolved check, not a pass.
+5. Verify fallback observability: logs, metrics, error state, or test assertions must distinguish "valid empty result" from "contract/parser failure" and "upstream unavailable". If production observability is outside scope, state that explicitly.
+6. Preserve raw evidence with secrets and personal data redacted: request path/version, status code, response field names/types, parser result, and whether fallback executed.
+
+Hard-stop conditions: undocumented invented fields, fields present only in mocks/examples, a documented/runtime shape mismatch, or fallback masking a parser/contract failure. Report the exact affected consumer and wait for correction; do not sign off for release.
+
 If tests cannot run, show the command attempted and the blocker. Then list the highest-value remaining tests instead of declaring success.
 
 #### Typical "chain not fully checked" pitfalls
